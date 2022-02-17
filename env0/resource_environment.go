@@ -264,6 +264,7 @@ func resourceEnvironmentRead(ctx context.Context, d *schema.ResourceData, meta i
 	if err != nil {
 		return diag.Errorf("could not get environment configuration variables: %v", err)
 	}
+
 	setEnvironmentSchema(d, environment, environmentConfigurationVariables)
 
 	return nil
