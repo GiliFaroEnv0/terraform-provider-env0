@@ -21,8 +21,6 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v2
-        id: checkout
-        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
       -
         name: Unshallow
         run: git fetch --prune --unshallow
@@ -32,29 +30,13 @@ jobs:
         with:
           go-version: 1.16 # please change also in `ci.yml`,`update-generated-docs.yml` and `go.mod`
       -
-        name: Import GPG key
-        uses: hashicorp/ghaction-import-gpg@v2.1.0
-        id: import_gpg
-        env:
-          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-          PASSPHRASE: ${{ secrets.PASSPHRASE }}
-      -
-        name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v2
-        with:
-          version: latest
-          args: release --rm-dist
-        env:
-          GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      -
         name: Get release by tag
         id: getReleaseByTag
         uses: cardinalby/git-get-release-action@v1.2.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag: ${{ steps.checkout.outputs.tag }}
+          tag: ${{ github.ref_name }}
       -
         name: Publish release
         uses: StuYarrow/publish-release@v1
