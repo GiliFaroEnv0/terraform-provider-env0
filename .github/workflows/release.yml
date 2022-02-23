@@ -40,13 +40,13 @@ jobs:
         with:
           go-version: 1.16 # please change also in `ci.yml`,`update-generated-docs.yml` and `go.mod`
       -
-        name: Get release by tag
+        name: Get release
         id: getReleaseByTag
         uses: cardinalby/git-get-release-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag: ${{ steps.tag_version.outputs.new_tag }}
+          releaseName: ${{ steps.tag_version.outputs.new_tag }} 🌈
           draft: true
       -
         name: Publish release
